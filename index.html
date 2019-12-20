@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #title{
+            text-align: center;
+        }
+        #reload{
+            position: absolute;
+            top: 100px;
+            right: 50px;
+            width: 150px;
+            height: 500px;
+            display: none;
+        }
+        .canvas{
+            width: 500px;
+            height: 800px;
+            background: #000;
+            margin: auto;
+            position: relative;
+        }
+        #obj{
+            background: white;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            top: 20px;
+        }
+        .alCenter{
+            text-align: center;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1 id="title">Hello World</h1>
+    <h1 class="alCenter">Scores: <span id="showScores"></span></h1>
+    <h1 class="alCenter">Mistakes: <span id="wrongClicks"></span></h1>
+    <div>
+        <div class="canvas" id="canvas">
+            <div id="obj">
+    
+            </div>
+        </div>
+        
+    </div>
+
+
+    <button id="reload">Reload</button>
+<script>
+    var scores = 0;
+    var mistakes = 0;
+    document.getElementById('reload').addEventListener('click', () =>{
+        location.reload();
+    });
+
+    document.getElementById('obj').addEventListener('click', ()=>{
+        scores++;
+        mistakes--;
+        document.getElementById('showScores').innerHTML = scores;
+    });
+    document.getElementById('canvas').addEventListener('click', ()=>{
+        mistakes++;
+        document.getElementById('wrongClicks').innerHTML = mistakes;
+    });
+
+    var x = setInterval(() => {
+        if(mistakes >= 5){
+            clearInterval(x)
+            document.getElementById('wrongClicks').append("You Lose!");
+            document.getElementById('canvas').removeEventListener('click', ()=>{});
+
+        }
+        var objTop = Math.floor(Math.random()*750)+"px";
+        var objLeft = Math.floor(Math.random()*450)+"px";
+        document.getElementById('obj').style.top = objTop;        
+        document.getElementById('obj').style.left = objLeft;        
+    }, 900);
+
+
+</script>
+
+</body>
+</html>
