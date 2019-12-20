@@ -19,7 +19,7 @@
         }
         .canvas{
             width: 500px;
-            height: 800px;
+            height: 700px;
             background: #000;
             margin: auto;
             position: relative;
@@ -34,13 +34,17 @@
         .alCenter{
             text-align: center;
         }
+        #instruction{
+            text-align: center;
+        }
         
     </style>
 </head>
 <body>
-    <h1 id="title">Hello World</h1>
+    <h1 id="title">Tap Tap</h1>
     <h1 class="alCenter">Scores: <span id="showScores"></span></h1>
     <h1 class="alCenter">Mistakes: <span id="wrongClicks"></span></h1>
+    <p id="instruction">Click on the white box to earn point</p>
     <div>
         <div class="canvas" id="canvas">
             <div id="obj">
@@ -53,34 +57,56 @@
 
     <button id="reload">Reload</button>
 <script>
+    
     var scores = 0;
     var mistakes = 0;
+    var isGameOver = false;
+    var objBorn = new Date().getTime();
+    var objClick;
+    var clicked = false;
+    var clickCount = 1;
+    var speed = 1000; // max point is 20
     document.getElementById('reload').addEventListener('click', () =>{
-        location.reload();
+        if(isGameOver)
+            location.reload();
     });
 
     document.getElementById('obj').addEventListener('click', ()=>{
-        scores++;
-        mistakes--;
-        document.getElementById('showScores').innerHTML = scores;
+        if(!isGameOver){
+            if(!clicked){
+                objClick = new Date().getTime();
+                scores += Math.floor((speed/100)) - Math.floor((objClick - objBorn)/100);
+                console.log(Math.floor((speed/100)) - Math.floor((objClick - objBorn)/100));
+                clickCount++; // incase want to increase speed
+                mistakes--;
+                document.getElementById('showScores').innerHTML = scores;
+                clicked = true;
+            }
+        }
     });
     document.getElementById('canvas').addEventListener('click', ()=>{
-        mistakes++;
-        document.getElementById('wrongClicks').innerHTML = mistakes;
+        if(!isGameOver){
+            mistakes++;
+            document.getElementById('wrongClicks').innerHTML = mistakes;
+        }
     });
 
     var x = setInterval(() => {
-        if(mistakes >= 5){
-            clearInterval(x)
-            document.getElementById('wrongClicks').append("You Lose!");
-            document.getElementById('canvas').removeEventListener('click', ()=>{});
-
-        }
-        var objTop = Math.floor(Math.random()*750)+"px";
-        var objLeft = Math.floor(Math.random()*450)+"px";
-        document.getElementById('obj').style.top = objTop;        
-        document.getElementById('obj').style.left = objLeft;        
-    }, 900);
+        if(!isGameOver){
+            if(mistakes >= 5){
+                clearInterval(x)
+                document.getElementById('wrongClicks').append("You Lose!");
+                document.getElementById('canvas').removeEventListener('click', ()=>{});
+                isGameOver = true;
+            }
+            var objTop = Math.floor(Math.random()*650)+"px";
+            var objLeft = Math.floor(Math.random()*450)+"px";
+            document.getElementById('obj').style.top = objTop;        
+            document.getElementById('obj').style.left = objLeft;
+            objBorn = new Date().getTime();
+            clicked = false;
+        }        
+    }, speed);
 
 
 </script>
