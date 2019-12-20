@@ -18,8 +18,8 @@
             display: none;
         }
         .canvas{
-            width: 400px;
-            height: 700px;
+            width: 300px;
+            height: 600px;
             background: #000;
             margin: auto;
             position: relative;
@@ -99,8 +99,8 @@
                 document.getElementById('canvas').removeEventListener('click', ()=>{});
                 isGameOver = true;
             }
-            var objTop = Math.floor(Math.random()*650)+"px";
-            var objLeft = Math.floor(Math.random()*350)+"px";
+            var objTop = Math.floor(Math.random()*550)+"px";
+            var objLeft = Math.floor(Math.random()*250)+"px";
             document.getElementById('obj').style.top = objTop;        
             document.getElementById('obj').style.left = objLeft;
             objBorn = new Date().getTime();
